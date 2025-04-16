@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SL Bus System</title>
+    <!-- icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- taiwind css -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../css/message.css">  
+</head>
+
+<body class="">
+    
+<div id="wrapper" class="">
+
+    <header class="sticky top-0 z-10">
+        <div class="bg-white py-3 shadow-md">
+            <div class="cont flex justify-between items-center">
+                <div class="flex items-center gap-[13px]">
+                    <button class="flex flex-col gap-[4px] md:hidden">
+                        <span class="w-[24px] h-[3px] bg-[#333333] inline-block rounded"></span>
+                        <span class="w-[17.75px] h-[3px] bg-[#333333] inline-block rounded"></span>
+                        <span class="w-[12px] h-[3px] bg-[#333333] inline-block rounded"></span>
+                    </button>
+                    <a href="usersPage.html" target="_self">
+                        <img src="../resources/SLBus.svg" class="w-[120px] pointer-events-none"  alt="">    
+                    </a>
+                </div>
+                <div class="hidden lg:flex gap-2  rounded-full py-[4px] pl-5 pr-1 bg-gray-200">
+                    <input id="userpage-search-bus" type="text" class="outline-none bg-transparent w-[250px] text-black placeholder-black" placeholder="Search bus?" autocomplete="false">
+                    <button id="u-search-bus-btn" class="bg-[#3ec2d4] rounded-full p-[5px]">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                          </svg> 
+                    </button> 
+                    <input type="hidden" id="userpage-selectedRouteId">    
+                </div>
+                <div class="flex gap-3 items-center">
+                    <a id="u-bus-manage" href="registerBus.html" target="_self" class="hidden md:block text-[#333] text-sm font-medium py-[10px] px-[10px] border-2 border-[#fff] hover:border-[#333] rounded-sm transition-all duration-300 ease-in-out">BUS&nbspMANAGE</a>
+                    <h1 id="u-username" class="text-[#333] font-medium hidden md:block text-sm">LOARDING...</h1>
+                    <a id="logout-btn" class="cursor-pointer text-[#333] text-sm font-medium py-[10px] px-[10px] border-2 border-[#fff] hover:border-[#333] rounded-sm transition-all duration-300 ease-in-out">LOG&nbspOUT</a>
+                </div>
+            </div>
+        </div>
+        <div id="seach-bar-sm" class="py-2 cont mt-2">
+            <div class="flex items-center justify-between lg:hidden  rounded-full py-[4px] pl-5 pr-1 bg-gray-200">
+                <input type="text" class="outline-none bg-transparent w-full text-black placeholder-black" placeholder="Search bus?">
+                <button class="bg-[#3ec2d4] rounded-full p-[5px]">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                      </svg> 
+                </button>     
+            </div>
+        </div>
+    </header>
+
+    <main class="cont mt-2 ">
+
+        <div id="userpage-busLocation-details">
+
+            <div class="md:flex shadow-md rounded-md p-3 bg-[#f0f2f5]">
+
+                <div class="w-full h-[500px]">
+                    <!-- default  -->
+                    <div id="default-div" class=" h-full flex items-center md:pr-3 justify-center text-[#54656f] mb-3 md:mb-0 border-b-2 md:border-b-0   border-[#54656f]">
+                        <!-- default -->
+                        <div id="userpage-busLocation-details-main-text" class="flex flex-col items-center gap-1" >
+                            <i class="fa-solid fa-bus text-[40px] text-[#54656f]"></i>
+                            Select a bus to start
+                        </div>
+                    </div>
+                    <!-- schedule Table -->
+                    <div class="hidden px-3 overflow-x-auto" id="scheduleTable">
+                        <table class=" bg-white shadow-md  overflow-hidden w-full">
+                            <thead class="bg-[#f0f2f5] text-[#54656f] border-2 border-[#54656f]">
+                                <tr>
+                                    <th class="p-2 text-left font-semibold">Start&nbspPlace</th>
+                                    <th class="p-2 text-left font-semibold">Start&nbspTime</th>
+                                    <th class="p-2 text-left font-semibold">End&nbspPlace</th>
+                                    <th class="p-2 text-left font-semibold">End&nbspTime</th>
+                                </tr>
+                            </thead>
+                            <tbody id="scheduleTableBody"></tbody>
+                        </table>
+                    </div>
+                    <!-- mapdiv -->
+                    <div id="loadMap-wrapper" class="hidden text-center h-full relative">
+                        <div id="search-container" class="absolute hidden text-left top-2 left-2"></div>
+                        <div id="loadMap" class="h-full"></div>
+                    </div>
+                </div>
+                
+                <div class="w-full md:pl-3 flex flex-col gap-3">
+
+                    <div>
+                        <p>Bus Number : <span id="busNumber" class="font-semibold"></span></p>
+                        <p>Phonenumber : <span id="phonenumber" class="font-semibold"></span></p>
+                        <p>Bus Type : <span id="busType" class="font-semibold"></span></p>
+                        <p>Passenger count : <span id="passengerCount" class="font-semibold">0</span></p>
+                        <p>Available seats : <span id="availableSeats" class="font-semibold"></span></p>
+                    </div>
+                    <div class="flex flex-col grow">
+                        <div id="message-area" class="bg-[#e5ddd5] rounded-md mb-2  h-[400px]  md:h-full">
+
+                            <!-- previw message area -->
+                            <div class="chat-messages max-h-[400px]" id="chat-messages"></div>
+                            <!-- default -->
+                            <!-- <div class="flex flex-col items-center gap-1 text-[#54656f]">
+                                <i class="fa-solid fa-comments text-[40px]"></i>
+                                No message
+                            </div> -->
+                        </div>
+                        <div id="meaasage-type" class="flex gap-3 mb-2">
+                            <input autocomplete="off" id="message-input" type="text" class="rounded-full px-3 py-2 w-full" placeholder="Type a message...">
+                            <button id="location-seach-btn" class="text-[20px] text-[#54656f] hover:text-[#128c7e]" title="Location send">
+                                <i class="fa-solid fa-location-crosshairs"></i>            
+                            </button>  
+                            <button class="text-[20px] text-[#54656f] hover:text-[#128c7e]" title="Image send">
+                                <i class="fa-solid fa-image"></i>
+                            </button>   
+                            <button  id="send-btn" class="text-[20px] text-[#54656f] hover:text-[#128c7e]" title="Message send">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="cont mt-6 mb-3 flex gap-3 md:gap-6 text-[#54656f]">
+                <button title="Passenger Up" class="pannel-button">
+                    <i class="fa-solid fa-person-arrow-up-from-line text-[30px]"></i>
+                </button>
+                <button title="Passenger Down" class="pannel-button">
+                    <i class="fa-solid fa-person-arrow-down-to-line text-[30px]"></i>
+                </button>
+                <button title="Bus Stop" class="pannel-button">
+                    <i class="fa-solid fa-hand text-[30px]"></i>
+                </button>
+                <button id="bus-book-btn" title="Bus Book" class="pannel-button">
+                    <i class="fa-solid fa-book text-[30px]"></i>
+                </button>
+                <button id="u-kickstart-btn" title="Kickstart" class="pannel-button ">
+                    <i class="fa-solid fa-plug-circle-bolt text-[30px]"></i>
+                </button>
+                <button id="u-kill-engine-btn" title="Kill the Engine" class="pannel-button">
+                    <i class="fa-solid fa-plug-circle-xmark text-[30px]"></i>
+                </button>
+            </div>
+            <p id="btn-pannel-err" class="text-red-500 mx-3"></p>
+
+        </div>
+
+        <div id="userpage-schedule-list-wrapper" class="hidden">
+            <div id="userpage-schedule-list" class="shadow-md rounded-md p-3 bg-[#f0f2f5] flex gap-3 flex-wrap justify-center">
+                
+            </div>
+        </div>
+        
+    </main>
+
+</div>
+
+<style type="text/tailwindcss">
+    .link{
+        @apply text-[#f47a47] underline
+    }
+    .btn01 {
+    @apply bg-[#ffd814] hover:bg-[#ffce12] cursor-pointer transition-all duration-300 
+    ease-in-out w-[100px] py-[0.4rem] rounded-full text-center;
+    }
+    .cont{
+        @apply w-full px-[12px] mx-auto sm:max-w-[540px] md:max-w-[720px] lg:max-w-[960px] xl:max-w-[1140px] 2xl:max-w-[1320px]
+    }
+    .pannel-button{
+        @apply border-2 border-[#54656f] p-2 rounded-md
+    }
+</style>
+<!-- jquery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+
+<!-- mapbox -->
+<script src='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js'></script>
+<link href='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css' rel='stylesheet' />
+<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.min.js"></script>
+<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.css" type="text/css">
+
+<!-- notyf -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
+<script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+
+<!-- gsap animation -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.7/gsap.min.js" integrity="sha512-f6bQMg6nkSRw/xfHw5BCbISe/dJjXrVGfz9BSDwhZtiErHwk7ifbmBEtF9vFW8UNIQPhV2uEFVyI/UHob9r7Cw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.7/ScrollTrigger.min.js" integrity="sha512-AcqPGqrrAEtEwe+ADO5R8RbdFi7tuU7b/A2cJJH0Im0D18NRk5p5s4B3E5PMuO81KFw0ClN7J5SHVUJz7KOb0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<!-- file js -->
+<script type="module" src="../js/usersPage.js"></script>
+</body>
+</html>

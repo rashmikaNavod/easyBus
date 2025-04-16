@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SL Bus System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body >
+
+<div id="wrapper" class="flex justify-center items-center sm:h-[90vh]">
+
+    <div class="border-gray-300 p-3 w-[100vw] mt-5 sm:border-2 sm:max-w-md sm:mt-0">
+        <div class="mb-5 md:mb-10 mt-3">
+            <img src="../resources/SLBus.svg" class="w-44 mx-auto pointer-events-none"  alt="">
+        </div>
+        <h1 class="text-center text-lg font-medium mb-2">Log in to easy Bus</h1>
+        <div>
+            <form id="login-form" action="" autocomplete="on">
+                <div class="mb-4">
+                    <input class="border border-gray-400 w-full focus:outline-gray-500 px-2 py-1" 
+                    type="email" id="l-email" placeholder="Username or Email">
+                    <p id="l-email-err" class="text-red-500 text-sm"></p>
+                </div>
+                <div class="mb-2">
+                    <input class="border border-gray-400 w-full focus:outline-gray-500 px-2 py-1" 
+                    type="password" id="l-password" placeholder="Password">
+                    <p id="l-password-err" class="text-red-500 text-sm"></p>
+                </div>
+                <div class="text-end text-sm mb-2">
+                    <a href="#" class="hover:opacity-70 opacity-50 underline">Forgot password</a>
+                </div>
+                <div class="mb-4">
+                    <button type="submit" class="btn01 smoth">Log in</button>
+                </div>
+            </form>
+        </div>
+        <div class="flex justify-center items-center mb-5">
+            <span class="border-t-[2px] w-[50%] mr-3"></span>
+            <span class="text-sm">OR</span>
+            <span class="border-t-[2px] w-[50%] ml-3"></span>
+        </div>
+        <div class="flex border-[1px] border-gray-400 justify-center rounded-md cursor-pointer gap-2 hover:bg-gray-200 items-center mb-5 px-1 py-[5px] smoth">
+            <img src="https://cdn.cdnlogo.com/logos/g/35/google-icon.svg" class="w-6 pointer-events-none" alt="">
+            <a href="#">Log In With Google</a>
+        </div>
+        <div class="flex justify-center items-center mb-4">
+            <span class="border-t-[2px] w-[50%] mr-3"></span>
+            <span class="text-center text-sm">Don't&nbsphave&nbspan&nbspaccount?</span>
+            <span class="border-t-[2px] w-[50%] ml-3"></span>
+        </div>
+        <div class="mb-4">
+            <a href="pages/signup.html" class="border-[1px] border-gray-400 rounded-md text-center w-full block hover:bg-gray-200 py-[0.3rem] smoth">Sign Up</a>
+        </div>
+    </div>
+
+</div>
+
+<style type="text/tailwindcss">
+    .btn01 {
+    @apply bg-[#ffd814] hover:bg-[#ffce12] cursor-pointer  w-full py-[0.3rem] rounded-md;
+    }
+    .smoth{
+        @apply transition-all duration-300 ease-in-out
+    }
+</style>
+<!-- ajax -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+<!-- notyf -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
+<script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+
+<!-- file js -->
+<script type="module" src="js/indeex.js"></script>
+</body>
+</html>

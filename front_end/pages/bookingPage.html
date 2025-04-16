@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SL Bus System</title>
+    <!-- icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- taiwind css -->
+    <script src="https://cdn.tailwindcss.com"></script> 
+</head>
+
+<body>
+    
+<div id="wrapper" class="">
+
+    <header class="sticky top-0 z-10">
+        <div class="bg-white py-3 shadow-md">
+            <div class="cont flex justify-between items-center">
+                <div class="flex items-center gap-[13px]">
+                    <button class="flex flex-col gap-[4px] md:hidden">
+                        <span class="w-[24px] h-[3px] bg-[#333333] inline-block rounded"></span>
+                        <span class="w-[17.75px] h-[3px] bg-[#333333] inline-block rounded"></span>
+                        <span class="w-[12px] h-[3px] bg-[#333333] inline-block rounded"></span>
+                    </button>
+                    <a href="usersPage.html" target="_self">
+                        <img src="../resources/SLBus.svg" class="w-[120px] pointer-events-none"  alt="">    
+                    </a>
+                </div>
+                <div class="hidden lg:flex gap-2  rounded-full py-[4px] pl-5 pr-1 bg-gray-200">
+                    <input id="search-date" type="date" class="outline-none bg-transparent w-[250px] text-black placeholder-black" placeholder="Search Date" autocomplete="false">
+                    <button id="search-date-btn" class="bg-[#3ec2d4] rounded-full p-[5px]">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                          </svg> 
+                    </button> 
+                    <input type="hidden" id="selectedRouteId">    
+                </div>
+                <div class="flex gap-3 items-center">
+                    <a id="u-bus-manage" href="registerBus.html" target="_self" class="hidden md:block text-[#333] text-sm font-medium py-[10px] px-[10px] border-2 border-[#fff] hover:border-[#333] rounded-sm transition-all duration-300 ease-in-out">BUS&nbspMANAGE</a>
+                    <h1 id="now-data" class="text-[#333] font-medium hidden md:block text-sm"></h1>
+                    <h1 id="u-username" class="text-[#333] font-medium hidden md:block text-sm">LOARDING...</h1>
+                    <a id="logout-btn" class="cursor-pointer text-[#333] text-sm font-medium py-[10px] px-[10px] border-2 border-[#fff] hover:border-[#333] rounded-sm transition-all duration-300 ease-in-out">LOG&nbspOUT</a>
+                </div>
+            </div>
+        </div>
+        <div id="seach-bar-sm" class="py-2 cont mt-2">
+            <div class="flex items-center justify-between lg:hidden  rounded-full py-[4px] pl-5 pr-1 bg-gray-200">
+                <input type="text" class="outline-none bg-transparent w-full text-black placeholder-black" placeholder="Search bus?">
+                <button class="bg-[#3ec2d4] rounded-full p-[5px]">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                      </svg> 
+                </button>     
+            </div>
+        </div>
+    </header>
+    
+    <div class="cont" id="wrapper">
+        <div id="bus">
+            
+        </div>
+    </div>
+
+</div>
+
+<style type="text/tailwindcss">
+    .link{
+        @apply text-[#f47a47] underline
+    }
+    .btn01 {
+    @apply bg-[#ffd814] hover:bg-[#ffce12] cursor-pointer transition-all duration-300 
+    ease-in-out w-[100px] py-[0.4rem] rounded-full text-center;
+    }
+    .cont{
+        @apply w-full px-[12px] mx-auto sm:max-w-[540px] md:max-w-[720px] lg:max-w-[960px] xl:max-w-[1140px] 2xl:max-w-[1320px]
+    }
+    .pannel-button{
+        @apply border-2 border-[#54656f] p-2 rounded-md
+    }
+</style>
+<!-- jquery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+
+<!-- notyf -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
+<script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+
+<!-- gsap animation -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.7/gsap.min.js" integrity="sha512-f6bQMg6nkSRw/xfHw5BCbISe/dJjXrVGfz9BSDwhZtiErHwk7ifbmBEtF9vFW8UNIQPhV2uEFVyI/UHob9r7Cw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.7/ScrollTrigger.min.js" integrity="sha512-AcqPGqrrAEtEwe+ADO5R8RbdFi7tuU7b/A2cJJH0Im0D18NRk5p5s4B3E5PMuO81KFw0ClN7J5SHVUJz7KOb0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<!-- file js -->
+<script type="module" src="../js/bookingPage.js"></script>
+</body>
+</html>

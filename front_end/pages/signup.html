@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SL Bus System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    
+<div id="wrapper" class="flex justify-center items-center sm:h-[100vh]">
+    <div class="sm:border-2 border-gray-300 w-[100vw] sm:max-w-md md:max-w-lg lg:max-w-xl p-3 mt-5 sm:mt-0">
+        <div class="mb-5 md:mb-10 mt-3">
+            <img src="../resources/SLBus.svg" class="w-44 mx-auto pointer-events-none"  alt="">
+        </div>
+        <h1 class="font-medium text-lg mb-2 text-center">Register to easy Bus</h1>
+
+        <form action="" autocomplete="on" id="register-form">
+            <div class="grid md:grid-cols-2 gap-2 mb-2">
+                <div class="">
+                    <label for="r-fullname">Full Name</label>
+                    <input class="border border-gray-400 focus:outline-gray-500 px-2 py-1 w-full" 
+                    type="text" id="r-fullname">
+                    <p id="r-fullname-err" class="text-red-500 text-sm"></p>
+                </div>
+                <div class="">
+                    <label for="r-username">Username</label>
+                    <input class="border border-gray-400 focus:outline-gray-500 px-2 py-1 w-full" 
+                    type="text" id="r-username">
+                    <p id="r-username-err" class="text-red-500 text-sm"></p>
+                </div>
+                <div class="">
+                    <label for="r-password">Password</label>
+                    <input class="border border-gray-400 focus:outline-gray-500 px-2 py-1 w-full" 
+                    type="password" id="r-password">
+                    <p id="r-password-err" class="text-red-500 text-sm"></p>
+                </div>
+                <div class="">
+                    <label for="r-number">Phone number</label>
+                    <input class="border border-gray-400 focus:outline-gray-500 px-2 py-1 w-full" 
+                    type="text" id="r-number">
+                    <p id="r-number-err" class="text-red-500 text-sm"></p>
+                </div>
+            </div>
+            <div class="mb-2">
+                <label for="r-email">Emai</label>
+                <input class="border border-gray-400 focus:outline-gray-500 px-2 py-1 w-full" 
+                type="email" id="r-email">
+                <p id="r-email-err" class="text-red-500 text-sm"></p>
+            </div>
+            <div class="mb-6">
+                 <label for="r-whoareyou">Who are you</label>
+                <select name="" id="r-whoareyou" class="appearance-none border border-gray-400 focus:outline-gray-500 px-2 py-1 w-full">
+                    <option selected disabled></option>
+                    <option value="PASSENGER">Join as a Passenger</option>
+                    <option value="BUS">Join as a Bus staff</option>
+                </select>
+            </div>
+            <div class="gap-3 flex justify-center items-center">
+                <input type="checkbox" class="w-5" id="r-checkBox">
+                <div class="text-sm">
+                    Yes, I understand and agree to the <a href="#" class="link">easy Bus Terms of Service,</a> including the <a href="#" class="link">User Agreement</a> and <a href="#" class="link">Privacy Policy.</a>
+                </div> 
+            </div>
+            <p id="r-checkBox-err" class="text-red-500 text-sm mt-3 mb-10 ml-1 text-center"></p>
+            <div class="mb-3 flex justify-center">
+                <button id="create-acc-btn" type="submit" class="btn01">Create my account</button>
+            </div>
+        </form>
+
+        <div class="mb-3 flex justify-center">
+            <span class="text-sm text-center">Already have an account? <a href="../index.html" class="link">Log In</a></span>
+        </div>
+    </div>
+</div>
+
+<style type="text/tailwindcss">
+    .link{
+        @apply text-[#2f6eb6] underline
+    }
+    .btn01 {
+    @apply bg-[#ffd814] hover:bg-[#ffce12] cursor-pointer transition-all duration-300 
+    ease-in-out w-[200px] py-[0.3rem] rounded-md;
+    }
+</style>
+<!-- ajax -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+<!-- notyf -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
+<script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+
+<!-- file js -->
+<script type="module" src="../js/signup.js"></script>
+</body>
+</html>

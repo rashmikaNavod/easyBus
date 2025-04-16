@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SL Bus System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    
+<div id="wrapper" class="">
+    <!-- header -->
+    <header class="sticky top-0 z-10">
+        <div class="bg-white py-3 shadow-md">
+            <div class="cont flex justify-between items-center">
+                <div class="flex items-center gap-[13px]">
+                    <button class="flex flex-col gap-[4px] md:hidden">
+                        <span class="w-[24px] h-[3px] bg-[#333333] inline-block rounded"></span>
+                        <span class="w-[17.75px] h-[3px] bg-[#333333] inline-block rounded"></span>
+                        <span class="w-[12px] h-[3px] bg-[#333333] inline-block rounded"></span>
+                    </button>
+                    <a href="usersPage.html" target="_self">
+                        <img src="../resources/SLBus.svg" class="w-[120px] pointer-events-none"  alt="">    
+                    </a>
+                </div>
+                <div class="hidden lg:flex gap-2  rounded-full py-[4px] pl-5 pr-1 bg-gray-200">
+                    <input type="text" class="outline-none bg-transparent w-[250px] text-black placeholder-black" placeholder="Search bus?">
+                    <button class="bg-[#3ec2d4] rounded-full p-[5px]">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                          </svg> 
+                    </button>     
+                </div>
+                <div class="flex gap-3 items-center">
+                    <a href="registerBus.html" target="_self" class="hidden md:block text-[#333] text-sm font-medium py-[10px] px-[10px] border-2 border-[#fff] hover:border-[#333] rounded-sm transition-all duration-300 ease-in-out">BUS&nbspMANAGE</a>
+                    <h1 id="b-username" class="text-[#333] font-medium hidden md:block text-sm"></h1>
+                    <a id="logout-btn" class="text-[#333] text-sm font-medium py-[10px] px-[10px] border-2 border-[#fff] hover:border-[#333] rounded-sm transition-all duration-300 ease-in-out">LOG&nbspOUT</a>
+                </div>
+            </div>
+        </div>
+        <div id="seach-bar-sm" class="py-2 cont mt-2">
+            <div class="flex items-center justify-between lg:hidden  rounded-full py-[4px] pl-5 pr-1 bg-gray-200">
+                <input type="text" class="outline-none bg-transparent w-full text-black placeholder-black" placeholder="Search bus?">
+                <button class="bg-[#3ec2d4] rounded-full p-[5px]">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                      </svg> 
+                </button>     
+            </div>
+        </div>
+    </header>
+
+    <main class="cont mt-2 ">
+        
+        <div class="bg-[#f0f2f5] shadow-md rounded-md p-3 ">
+            <div class="flex items-center justify-between mb-2">
+                <h2 class="text-xl font-medium text-[#333333]">Register Bus</h2>
+                <button id="registerBusBtn" class="btn01 text-sm">Register</button>
+            </div>
+            <div class="md:flex gap-8">
+                <div class="w-full">
+                    <div class="mb-2">
+                        <label for="busnumber">Bus Number* :</label>
+                        <input autocomplete="off" class="border border-gray-400 focus:outline-gray-500 px-2 py-1 w-full" 
+                        type="text" id="busnumber">
+                        <p id="busnumber-err" class="text-red-500 text-sm"></p>
+                    </div>
+                    <div class="mb-2">
+                        <label for="bustype">Bus Type* :</label>
+                        <select name="" id="bustype" class="appearance-none border border-gray-400 focus:outline-gray-500 px-2 py-1 w-full">
+                            <option selected disabled></option>
+                            <option value="CTB">CTB</option>
+                            <option value="PRIVATE">PRIVATE</option>
+                        </select>
+                        <p id="bustype-err" class="text-red-500 text-sm"></p>
+                    </div>
+                    <div class="mb-2">
+                        <label for="drivername">Driver Name* :</label>
+                        <input autocomplete="off" class="border border-gray-400 focus:outline-gray-500 px-2 py-1 w-full" 
+                        type="text" id="drivername">
+                        <p id="drivername-err" class="text-red-500 text-sm"></p>
+                    </div>
+                    <div class="mb-2">
+                        <label for="bus-phonenumber">Phonenumber* :</label>
+                        <input autocomplete="off" class="border border-gray-400 focus:outline-gray-500 px-2 py-1 w-full" 
+                        type="text" id="bus-phonenumber">
+                        <p id="bus-phonenumber-err" class="text-red-500 text-sm"></p>
+                    </div>
+                    <div class="mb-2">
+                        <label for="bus-seats">Number of Seats* :</label>
+                        <input autocomplete="off" class="border border-gray-400 focus:outline-gray-500 px-2 py-1 w-full" 
+                        type="number" id="bus-seats">
+                        <p id="bus-seats-err" class="text-red-500 text-sm"></p>
+                    </div>
+                    <div class="mb-2">
+                        <label for="busrouteSearch">Select Bus Route :</label>
+                        <input type="text" id="busrouteSearch" class="appearance-none border border-gray-400 focus:outline-gray-500 px-2 py-1 w-full">
+                        <input type="hidden" id="selectedRouteId">
+                        <p id="busroute-err" class="text-red-500 text-sm"></p>
+                    </div>
+                </div>
+                <div class="w-full">
+                    <h2 class="font-medium text-center">Bus Schedule</h2>
+                    <div class="mb-2">
+                        <label for="startplace">Start Place :</label>
+                        <select class="appearance-none border border-gray-400 focus:outline-gray-500 px-2 py-1 w-full" id="startplace">
+                        </select>
+                        <p id="startplace-err" class="text-red-500 text-sm"></p>
+                    </div>
+                    <div class="mb-2">
+                        <label for="starttime">Start Time :</label>
+                        <input autocomplete="off" class="border border-gray-400 focus:outline-gray-500 px-2 py-1 w-full" 
+                        type="time" id="starttime">
+                        <p id="starttime-err" class="text-red-500 text-sm"></p>
+                    </div>
+                    <div class="mb-2">
+                        <label for="endplace">End Place :</label>
+                        <select class="appearance-none border border-gray-400 focus:outline-gray-500 px-2 py-1 w-full" id="endplace">
+                        </select>
+                        <p id="endplace-err" class="text-red-500 text-sm"></p>
+                    </div>
+                    <div class="mb-3">
+                        <label for="endtime">End Time :</label>
+                        <input autocomplete="off" class="border border-gray-400 focus:outline-gray-500 px-2 py-1 w-full" 
+                        type="time" id="endtime">
+                        <p id="endtime-err" class="text-red-500 text-sm"></p>
+                    </div>
+                    <div class="mb-2">
+                        <button id="addBtn" class="btn01 text-sm">Add</button>
+                    </div>
+                </div>
+            </div>
+            <div class=" overflow-x-auto mt-5">
+                <table id="scheduleTable" class="w-full max-w-[800px] bg-white shadow-md  overflow-hidden">
+                    <thead class="bg-[#f0f2f5] text-[#54656f] border-2 border-[#54656f]">
+                        <tr>
+                            <th class="p-2 text-left font-semibold">Start&nbspPlace</th>
+                            <th class="p-2 text-left font-semibold">Start&nbspTime</th>
+                            <th class="p-2 text-left font-semibold">End&nbspPlace</th>
+                            <th class="p-2 text-left font-semibold">End&nbspTime</th>
+                            <th class="p-2 text-center font-semibold">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="scheduleTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="my-5 bg-[#f0f2f5] shadow-md rounded-md p-3"> 
+            <h2 class="text-xl font-medium text-[#333333]">Seat Layout</h2>
+            <div class="flex items-center justify-center mt-2">
+                <div id="seat-layout-wrapper" class="w-[300px] h-[445px] border-2 border-gray-600 flex flex-col gap-2">
+                    <div class="bg-slate-300 w-fit p-4 self-end">Driver</div>
+                    <!-- top -->
+                    <div class="flex justify-between">
+                        <div class="flex flex-col gap-1 p-2 bg-slate-300">
+                            <p class="text-center">Top Left</p>
+                            <input id="top-left-rows" type="number" placeholder="rows" class="seat">
+                            <input id="top-left-colums" type="number" placeholder="colums" class="seat">
+                        </div>
+                        <div class="flex flex-col gap-1 p-2 bg-slate-300">
+                            <p class="text-center">Top Right</p>
+                            <input id="top-right-rows" type="number" placeholder="rows" class="seat">
+                            <input id="top-right-colums" type="number" placeholder="colums" class="seat">
+                        </div>
+                    </div>
+
+                    <!-- middle -->
+                    <div class="flex justify-between">
+                        <div class="flex flex-col gap-1 p-2 bg-slate-300">
+                            <p class="text-center">Middle Left</p>
+                            <input type="number" id="middle-left-rows" placeholder="rows" class="seat">
+                            <input type="number" id="middle-left-colums" placeholder="colums" class="seat">
+                        </div>
+                        <div class="flex flex-col gap-1 p-2 bg-slate-300">
+                            <p class="text-center">Middle Right</p>
+                            <input type="number" id="middle-right-rows" placeholder="rows" class="seat">
+                            <input type="number" id="middle-right-colums" placeholder="colums" class="seat">
+                        </div>
+                    </div>
+                    
+                    <!-- bottom -->
+                    <div>
+                        <div class="flex flex-col items-center gap-1 p-2 bg-slate-300">
+                            <p class="text-center">Bottom</p>
+                            <input type="number" id="bottom-rows" placeholder="rows" class="seat">
+                            <input type="number" id="bottom-colums" placeholder="colums" class="seat">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <p id="seat-layout-err" class="text-red-500 text-sm mt-3"></p>
+        </div>
+
+        <!-- set prices -->
+        <div class="my-5 bg-[#f0f2f5] shadow-md rounded-md p-3">
+            <h2 class="text-xl font-medium text-[#333333]">Set Prices</h2>
+            <div class="mt-3">
+                <div class="md:flex justify-center gap-3 items-end">
+                    <div class="">
+                        <label for="price-start-place">Start Place :</label>
+                        <input class="border border-gray-400 focus:outline-gray-500 px-2 py-1 w-full" 
+                        type="text" id="price-start-place">
+                        <p id="price-start-place-err" class="text-red-500 text-sm"></p>
+                    </div>
+                    <div class="">
+                        <label for="price-end-place">End Place :</label>
+                        <input class="border border-gray-400 focus:outline-gray-500 px-2 py-1 w-full" 
+                        type="text" id="price-end-place">
+                        <p id="price-end-place-err" class="text-red-500 text-sm"></p>
+                    </div>
+                    <div class="">
+                        <label for="price-for-seat">Price :</label>
+                        <input class="border border-gray-400 focus:outline-gray-500 px-2 py-1 w-full" 
+                        type="number" id="price-for-seat">
+                        <p id="price-for-seat-err" class="text-red-500 text-sm"></p>
+                    </div>
+                    <div class="text-center"><button id="add-price-btn"><i class="fa-solid fa-square-plus text-[30px] mt-2 text-blue-500 hover:text-blue-700"></i></button></div>   
+                </div>
+                <div class="overflow-x-auto mt-5 md:flex justify-center">
+                    <table id="pricesTable" class="w-full max-w-[800px] bg-white shadow-md  overflow-hidden">
+                        <thead class="bg-[#f0f2f5] text-[#54656f] border-2 border-[#54656f]">
+                            <tr>
+                                <th class="p-2 text-left font-semibold">Start&nbspPlace</th>
+                                <th class="p-2 text-left font-semibold">End&nbspPlace</th>
+                                <th class="p-2 text-left font-semibold">Price</th>
+                                <th class="p-2 text-center font-semibold">Action</th>
+                            </tr>    
+                        </thead>
+                        <tbody id="pricesTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+</div>
+
+<style type="text/tailwindcss">
+    .btn01 {
+    @apply bg-[#ffd814] hover:bg-[#ffce12] cursor-pointer transition-all duration-300 
+    ease-in-out w-[100px] py-[0.4rem] rounded-full text-center;
+    }
+    .cont{
+        @apply w-full px-[12px] mx-auto sm:max-w-[540px] md:max-w-[720px] lg:max-w-[960px] xl:max-w-[1140px] 2xl:max-w-[1320px]
+    }
+    .seat{
+        @apply bg-transparent outline-none px-2 py-1 w-[100px] border-2 border-black/40 placeholder:text-black/60
+    }
+</style>
+<!-- jquery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+
+<!-- notyf -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
+<script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+
+<!-- gsap animation -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.7/gsap.min.js" integrity="sha512-f6bQMg6nkSRw/xfHw5BCbISe/dJjXrVGfz9BSDwhZtiErHwk7ifbmBEtF9vFW8UNIQPhV2uEFVyI/UHob9r7Cw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.7/ScrollTrigger.min.js" integrity="sha512-AcqPGqrrAEtEwe+ADO5R8RbdFi7tuU7b/A2cJJH0Im0D18NRk5p5s4B3E5PMuO81KFw0ClN7J5SHVUJz7KOb0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<!-- file js -->
+<script type="module" src="../js/registerBus.js"></script>
+</body>
+</html>

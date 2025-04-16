@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SL Bus System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    
+<div id="wrapper" class="">
+    <!-- header -->
+    <header class="sticky top-0 z-10">
+        <div class="bg-white py-3 shadow-md">
+            <div class="cont flex justify-between items-center">
+                <div class="flex items-center gap-[13px]">
+                    <button class="flex flex-col gap-[4px] md:hidden">
+                        <span class="w-[24px] h-[3px] bg-[#333333] inline-block rounded"></span>
+                        <span class="w-[17.75px] h-[3px] bg-[#333333] inline-block rounded"></span>
+                        <span class="w-[12px] h-[3px] bg-[#333333] inline-block rounded"></span>
+                    </button>
+                    <a href="usersPage.html" target="_self">
+                        <img src="../resources/SLBus.svg" class="w-[120px] pointer-events-none"  alt="">    
+                    </a>
+                </div>
+                <div class="flex gap-3 items-center">
+                    <h1 class="text-[#333] font-medium hidden md:block text-sm">RASHMIKA</h1>
+                    <a href="#" class="text-[#333] text-sm font-medium py-[10px] px-[10px] border-2 border-[#fff] hover:border-[#333] rounded-sm transition-all duration-300 ease-in-out">LOG&nbspOUT</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="cont mt-5 ">
+
+        <!-- create route -->
+        <div class="bg-[#f0f2f5] rounded-md p-3">
+            <div class="flex items-center justify-between mb-2">
+                <h2 class="text-xl font-medium text-[#333333]">Create Route</h2>
+                <button id="route-main-btn" class="btn01 text-sm">Create</button>
+            </div>
+            <div class="md:flex gap-8">
+                <div class="w-full">
+                    <div class="mb-2">
+                        <label for="routenumber">Route Number* :</label>
+                        <input autocomplete="off" class=" border border-gray-400 focus:outline-gray-500 px-2 py-1 w-full" 
+                        type="text" id="routenumber">
+                        <p id="routenumber-err" class="text-red-500 text-sm"></p>
+                    </div>
+                    <div class="mb-2">
+                        <label for="endplace">End Place* :</label>
+                        <input autocomplete="off" class="border border-gray-400 focus:outline-gray-500 px-2 py-1 w-full" 
+                        type="text" id="endplace">
+                        <p id="endplace-err" class="text-red-500 text-sm"></p>
+                    </div>
+                </div>
+                <div class="w-full">
+                    <div class="mb-2">
+                        <label for="startplace">Start Place :</label>
+                        <input autocomplete="off" class="border border-gray-400 focus:outline-gray-500 px-2 py-1 w-full" 
+                        type="text" id="startplace">
+                        <p id="startplace-err" class="text-red-500 text-sm"></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- search box -->
+            <div class="flex items-center border-2 border-[#54656f] mb-3 mt-5 rounded-full px-5 py-1 w-fit gap-2">
+                <input autocomplete="off" id="route-seach" class="bg-transparent outline-none" type="text" placeholder="Search...">
+                <button title="Search">
+                    <i class="fa-solid fa-magnifying-glass text-[#54656f]"></i>
+                </button>
+            </div>
+
+            <!-- table -->
+            <div class=" overflow-x-auto h-[200px]">
+                <table class="w-full max-w-[800px] bg-white shadow-md  overflow-hidden">
+                    <thead class="bg-[#f0f2f5] text-[#54656f] border-2 border-[#54656f]">
+                        <tr>
+                            <th class="p-2 text-left font-semibold">#</th>
+                            <th class="p-2 text-left font-semibold">Route&nbspNumber</th>
+                            <th class="p-2 text-left font-semibold">Start&nbspPlace</th>
+                            <th class="p-2 text-left font-semibold">End&nbspPlace</th>
+                            <th class="p-2 text-center font-semibold">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="routeTableBody"></tbody>
+                </table>
+            </div>
+            
+        </div>
+
+        <!-- bus details -->
+        <div class="bg-[#f0f2f5] rounded-md p-3 mt-4">
+            <div class="flex items-center justify-between mb-2">
+                <h2 class="text-xl font-medium text-[#333333]">Bus Details</h2>
+            </div>  
+            <!-- search box -->
+            <div class="flex items-center border-2 border-[#54656f] mb-3 mt-5 rounded-full px-5 py-1 w-fit gap-2">
+                <input autocomplete="off" id="bus-seach" class="bg-transparent outline-none" type="text" placeholder="Search Bus...">
+                <button title="Search">
+                    <i class="fa-solid fa-magnifying-glass text-[#54656f]"></i>
+                </button>
+            </div>
+
+            <!-- table -->
+            <div class=" overflow-x-auto h-[200px]">
+                <table class="w-full max-w-[800px] bg-white shadow-md  overflow-hidden">
+                    <thead class="bg-[#f0f2f5] text-[#54656f] border-2 border-[#54656f]">
+                        <tr>
+                            <th class="p-2 text-left font-semibold">#</th>
+                            <th class="p-2 text-left font-semibold">Bus&nbspNumber</th>
+                            <th class="p-2 text-left font-semibold">Driver&nbspName</th>
+                            <th class="p-2 text-left font-semibold">Phonenumber</th>
+                            <th class="p-2 text-left font-semibold">Seats</th>
+                            <th class="p-2 text-center font-semibold">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="BusTableBody"></tbody>
+                </table>
+            </div>                      
+        </div> 
+
+        <!-- user details -->
+        <div class="bg-[#f0f2f5] rounded-md p-3 mt-4">
+            <div class="flex items-center justify-between mb-2">
+                <h2 class="text-xl font-medium text-[#333333]">User Details</h2>
+            </div> 
+
+            <!-- search box -->
+            <div class="flex items-center border-2 border-[#54656f] mb-3 mt-5 rounded-full px-5 py-1 w-fit gap-2">
+                <input autocomplete="off" id="user-seach" class="bg-transparent outline-none" type="text" placeholder="Search User...">
+                <button title="Search">
+                    <i class="fa-solid fa-magnifying-glass text-[#54656f]"></i>
+                </button>
+            </div>
+
+            <!-- table -->
+            <div class=" overflow-x-auto h-[200px]">
+                <table class="w-full max-w-[800px] bg-white shadow-md  overflow-hidden">
+                    <thead class="bg-[#f0f2f5] text-[#54656f] border-2 border-[#54656f]">
+                        <tr>
+                            <th class="p-2 text-left font-semibold">#</th>
+                            <th class="p-2 text-left font-semibold">Username</th>
+                            <th class="p-2 text-left font-semibold">Full&nbspName</th>
+                            <th class="p-2 text-left font-semibold">Email</th>
+                            <th class="p-2 text-left font-semibold">Phonenumber</th>
+                            <th class="p-2 text-left font-semibold">Role</th>
+                            <th class="p-2 text-center font-semibold">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="userTableBody"></tbody>
+                </table>
+            </div>            
+        </div> 
+        
+    </main>
+
+
+</div>
+
+<style type="text/tailwindcss">
+
+    .btn01 {
+    @apply bg-[#ffd814] hover:bg-[#ffce12] cursor-pointer transition-all duration-300 
+    ease-in-out w-[100px] py-[0.4rem] rounded-full text-center;
+    }
+    .cont{
+        @apply w-full px-[12px] mx-auto sm:max-w-[540px] md:max-w-[720px] lg:max-w-[960px] xl:max-w-[1140px] 2xl:max-w-[1320px]
+    }
+</style>
+<!-- ajax -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+<!-- notyf -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
+<script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+
+<!-- file js -->
+<script type="module" src="../js/adminPanel.js"></script>
+</body>
+</html>
