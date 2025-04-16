@@ -3,10 +3,13 @@ package org.example.sl_bus_system.service.impl;
 import org.example.sl_bus_system.dto.AuthRequestDTO;
 import org.example.sl_bus_system.dto.RegisterRequestDTO;
 import org.example.sl_bus_system.dto.ResponseDTO;
+import org.example.sl_bus_system.dto.UserDTO;
+import org.example.sl_bus_system.entity.PasswordResetToken;
 import org.example.sl_bus_system.entity.User;
 import org.example.sl_bus_system.enums.UserStatus;
 import org.example.sl_bus_system.exception.ResourceAlreadyExistException;
 import org.example.sl_bus_system.exception.ResourceNotFoundException;
+import org.example.sl_bus_system.repo.PasswordResetTokenRepository;
 import org.example.sl_bus_system.repo.UserRepository;
 import org.example.sl_bus_system.service.AuthService;
 import org.example.sl_bus_system.service.UserService;
@@ -16,14 +19,19 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class AuthServiceImpl implements AuthService {
@@ -35,6 +43,12 @@ public class AuthServiceImpl implements AuthService {
     private JwtUtil jwtUtil;
     @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    PasswordResetTokenRepository passwordResetTokenRepository;
+    @Autowired
+    private JavaMailSender mailSender;
+
+    private final long EXPIRATION_TIME = 24;
 
     @Override
     public ResponseEntity<ResponseDTO> userRegister(RegisterRequestDTO registerRequestDTO) {
@@ -90,4 +104,45 @@ public class AuthServiceImpl implements AuthService {
         }
 
     }
+
+    @Override
+    public UserDTO emailExists(String email) {
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
+            throw new ResourceNotFoundException("Email Not Found");
+        }
+
+        PasswordResetToken existingToken = passwordResetTokenRepository.findByUser(user);
+        if (existingToken != null) {
+            passwordResetTokenRepository.delete(existingToken);
+        }
+
+        String token = UUID.randomUUID().toString();
+        System.out.println(token);
+
+        PasswordResetToken myToken = new PasswordResetToken();
+        myToken.setToken(token);
+        myToken.setUser(user);
+        myToken.setExpiryDate(Instant.now().plus(EXPIRATION_TIME, ChronoUnit.HOURS));
+        System.out.println(myToken);
+        passwordResetTokenRepository.save(myToken);
+//        sendPasswordResetEmail(user,token);
+
+        return modelMapper.map(user, UserDTO.class);
+    }
+
+    private void sendPasswordResetEmail(User user ,String token) {
+        try{
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setSubject("For reset Password");
+            message.setTo(user.getEmail());
+            message.setText(token);
+            message.setFrom("easybus.lk@gmail.com");
+            mailSender.send(message);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+
 }
