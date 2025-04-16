@@ -22,7 +22,7 @@ public class PasswordResetToken {
     @Column(nullable = false)
     private Instant expiryDate;
 
-    @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
-    @JoinColumn(nullable = false)
+    @OneToOne
+    @JoinColumn(nullable = false, name = "userId", referencedColumnName = "userId",unique = true)
     private User user;
 }

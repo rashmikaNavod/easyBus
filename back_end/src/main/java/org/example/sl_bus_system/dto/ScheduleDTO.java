@@ -17,3 +17,4 @@ public class ScheduleDTO {
     private LocalTime endTime;
     private Integer busId;
 }
+

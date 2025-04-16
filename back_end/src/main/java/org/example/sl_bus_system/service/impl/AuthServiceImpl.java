@@ -1,9 +1,6 @@
 package org.example.sl_bus_system.service.impl;
 
-import org.example.sl_bus_system.dto.AuthRequestDTO;
-import org.example.sl_bus_system.dto.RegisterRequestDTO;
-import org.example.sl_bus_system.dto.ResponseDTO;
-import org.example.sl_bus_system.dto.UserDTO;
+import org.example.sl_bus_system.dto.*;
 import org.example.sl_bus_system.entity.PasswordResetToken;
 import org.example.sl_bus_system.entity.User;
 import org.example.sl_bus_system.enums.UserStatus;
@@ -28,10 +25,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class AuthServiceImpl implements AuthService {
@@ -48,7 +42,7 @@ public class AuthServiceImpl implements AuthService {
     @Autowired
     private JavaMailSender mailSender;
 
-    private final long EXPIRATION_TIME = 24;
+    private final long EXPIRATION_TIME_MINUTES = 5;
 
     @Override
     public ResponseEntity<ResponseDTO> userRegister(RegisterRequestDTO registerRequestDTO) {
@@ -112,37 +106,92 @@ public class AuthServiceImpl implements AuthService {
             throw new ResourceNotFoundException("Email Not Found");
         }
 
-        PasswordResetToken existingToken = passwordResetTokenRepository.findByUser(user);
-        if (existingToken != null) {
-            passwordResetTokenRepository.delete(existingToken);
+        PasswordResetToken passwordResetToken = passwordResetTokenRepository.findPasswordResetTokenByUser(user);
+        if (passwordResetToken != null) {
+            passwordResetTokenRepository.delete(passwordResetToken);
+            passwordResetTokenRepository.flush();
         }
 
-        String token = UUID.randomUUID().toString();
-        System.out.println(token);
+        String otpCode = generateSixDigitOTP();
 
         PasswordResetToken myToken = new PasswordResetToken();
-        myToken.setToken(token);
+        myToken.setToken(otpCode);
         myToken.setUser(user);
-        myToken.setExpiryDate(Instant.now().plus(EXPIRATION_TIME, ChronoUnit.HOURS));
-        System.out.println(myToken);
+        myToken.setExpiryDate(Instant.now().plus(EXPIRATION_TIME_MINUTES, ChronoUnit.MINUTES));
         passwordResetTokenRepository.save(myToken);
-//        sendPasswordResetEmail(user,token);
 
-        return modelMapper.map(user, UserDTO.class);
+        sendPasswordResetEmail(user, otpCode);
+
+        UserDTO userDTO = new UserDTO();
+        userDTO.setUserId(user.getUserId());
+        userDTO.setUsername(user.getUsername());
+        userDTO.setEmail(user.getEmail());
+        userDTO.setRole(user.getRole());
+        userDTO.setStatus(user.getStatus());
+        // Don't include password in DTO
+        return userDTO;
     }
 
-    private void sendPasswordResetEmail(User user ,String token) {
+    private void sendPasswordResetEmail(User user ,String otpCode) {
         try{
             SimpleMailMessage message = new SimpleMailMessage();
-            message.setSubject("For reset Password");
+            message.setSubject("EasyBus Password Reset OTP");
             message.setTo(user.getEmail());
-            message.setText(token);
+            message.setText("Your password reset code is: " + otpCode + "\n\nThis code will expire in 5 minutes.");
             message.setFrom("easybus.lk@gmail.com");
+
+            System.out.println(message);
+
             mailSender.send(message);
         }catch (Exception e){
             e.printStackTrace();
         }
     }
 
+    private String generateSixDigitOTP() {
+        Random random = new Random();
+        int otp = 100000 + random.nextInt(900000);
 
+        System.out.println(otp);
+
+        return String.valueOf(otp);
+    }
+
+    @Override
+    public boolean verifyOTP(String otpCode, String email) {
+        User user  = userRepository.findByEmail(email);
+        if(user == null) {
+            return false;
+        }
+        PasswordResetToken token = passwordResetTokenRepository.findPasswordResetTokenByUser(user);
+        if(token == null) {
+            return false;
+        }
+
+        boolean isValid = token.getToken().equals(otpCode) && token.getExpiryDate().isAfter(Instant.now());
+        return isValid;
+
+    }
+
+    @Override
+    public ResponseEntity<ResponseDTO> resetPassword(ResetPasswordDTO resetPasswordDTO) {
+        if (!verifyOTP(resetPasswordDTO.getOtp(), resetPasswordDTO.getEmail())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new ResponseDTO(VarList.Bad_Gateway, "Invalid or expired OTP", null));
+        }
+        User user = userRepository.findByEmail(resetPasswordDTO.getEmail());
+        user.setPassword(passwordEncoder.encode(resetPasswordDTO.getPassword()));
+        userRepository.save(user);
+
+        // Delete the used token
+        PasswordResetToken token = passwordResetTokenRepository.findPasswordResetTokenByUser(user);
+        if (token != null) {
+            passwordResetTokenRepository.delete(token);
+        }
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new ResponseDTO(VarList.OK, "Password reset successfully", null));
+
+
+    }
 }

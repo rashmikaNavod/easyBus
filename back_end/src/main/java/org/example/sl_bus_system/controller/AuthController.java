@@ -1,9 +1,6 @@
 package org.example.sl_bus_system.controller;
 
-import org.example.sl_bus_system.dto.AuthRequestDTO;
-import org.example.sl_bus_system.dto.MailDTO;
-import org.example.sl_bus_system.dto.RegisterRequestDTO;
-import org.example.sl_bus_system.dto.ResponseDTO;
+import org.example.sl_bus_system.dto.*;
 import org.example.sl_bus_system.service.AuthService;
 import org.example.sl_bus_system.service.UserService;
 import org.example.sl_bus_system.util.VarList;
@@ -14,14 +11,15 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
     @Autowired
     private AuthService authService;
-    @Autowired
-    private JavaMailSender mailSender;
 
 
     @PostMapping("/register")
@@ -37,24 +35,28 @@ public class AuthController {
     @GetMapping("/check_mail/{mail}")
     public ResponseEntity<ResponseDTO> checkMail(@PathVariable("mail") String mail) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(new ResponseDTO(VarList.OK, "Email found ",authService.emailExists(mail)));
+                .body(new ResponseDTO(VarList.OK, "Email found and OTP send",authService.emailExists(mail)));
     }
 
-    @PostMapping("/mail")
-    public String sendEmail(@RequestBody MailDTO mailDTO){
-        try{
-            SimpleMailMessage message = new SimpleMailMessage();
-            message.setSubject(mailDTO.getSubject());
-            message.setTo(mailDTO.getToMail());
-            message.setText(mailDTO.getMessage());
-            message.setFrom("easybus.lk@gmail.com");
-            mailSender.send(message);
-            return "success";
-        }catch (Exception e){
-            e.printStackTrace();
-            return e.getMessage();
+    @PostMapping("/verify_otp")
+    public ResponseEntity<ResponseDTO> verifyOTP(@RequestParam String otp, @RequestParam String email) {
+        boolean isValid = authService.verifyOTP(otp, email);
+        if (isValid) {
+            Map<String, Object> data = new HashMap<>();
+            data.put("verified", true);
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ResponseDTO(VarList.OK, "OTP verified successfully", data));
+        } else {
+            Map<String, Object> data = new HashMap<>();
+            data.put("verified", false);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new ResponseDTO(VarList.Bad_Gateway, "Invalid or expired OTP", data));
         }
+    }
 
+    @PostMapping("/reset-password")
+    public ResponseEntity<ResponseDTO> resetPassword(@RequestBody ResetPasswordDTO resetPasswordDTO) {
+        return authService.resetPassword(resetPasswordDTO);
     }
 
 }

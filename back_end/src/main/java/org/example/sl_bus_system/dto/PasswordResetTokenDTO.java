@@ -14,5 +14,5 @@ public class PasswordResetTokenDTO {
     private Long resetTokenId;
     private String token;
     private Instant expiryDate;
-    private UserDTO user;
+    private Long userId;
 }

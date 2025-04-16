@@ -29,7 +29,7 @@ public class Bus_Seat {
     @Column(nullable = false)
     private String bottom;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "busId", referencedColumnName = "busId", nullable = false)
     private Bus bus;
 
