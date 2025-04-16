@@ -7,4 +7,8 @@ The system accommodates two types of users: Bus Owners and Normal Users (Passeng
 With its user-friendly interface and real-time tracking, the Sri Lanka Bus Management System enhances commuter convenience, reduces waiting times, and improves public transport efficiency for both passengers and bus operators.
 
 ## UI Screenshots
-![Hero Login](1.png)
+![Hero Login](SS/1.png)
+![](SS/2.png)
+![](SS/3.png)
+![](SS/4.png)
+![](SS/5.png)
